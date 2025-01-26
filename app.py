@@ -1,6 +1,6 @@
 import gradio as gr
 import requests
-from bs4 import BeautifulSoup
+from bs4from database import store_content import BeautifulSoup
 
 
 context = []  # List to store conversation history#
@@ -11,7 +11,15 @@ def scrape_website(url, question):
     # Send the user's query to the LLM for retrieval
     # This requires using the LLM's API and the API key from config.py
     # For example:
-    retrieved_content = llm_retrieve(LLM_API_KEY, url, question)
+    retrieved_content = llm_retr
+        # Evaluate relevance using the LLM
+    relevance_prompt = f"Assess the relevance of the following content for the query '{question}':\n{retrieved_content}"
+    relevance_score = llm_api_call(LLM_API_KEY, llm, relevance_prompt)
+    
+    # Store content if relevant
+    if relevance_score > 0.5:  # Assuming a threshold of 0.5 for relevance
+        store_content(url, retrieved_content)
+ieve(LLM_API_KEY, url, question)
     return retrieved_content
 
 def answer_question(llm, question, website_content):
