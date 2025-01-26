@@ -1,5 +1,5 @@
 # gradio-website-qa
-A Gradio interface that accepts a website address and a dropdown to select an LLM. It scrapes the website in a RAG-like fashion to answer questions about the website using the selected LLM.
+A A Gradio interface that accepts a website address and a dropdown to select an LLM. It uses the LLM's retrieval capabilities to extract relevant information from the website and answer questions about the website using the selected LLM.
 
 ## Setup Instructions
 
@@ -25,5 +25,4 @@ A Gradio interface that accepts a website address and a dropdown to select an LL
 
 5. **Use the Gradio interface**:
    - Open the provided URL in your browser.
-   - Enter the website URL, select the LLM, and ask a question.
-   - The application will scrape the website and provide an answer using the selected LLM.
+   Enter the website URL, select the LLM, and ask a question. The application will use the LLM's retrieval capabilities to extract relevant information from the website and provide an answer using the selected LLM.swer using the selected LLM.
