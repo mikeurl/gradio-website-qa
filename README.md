@@ -25,4 +25,6 @@ A A Gradio interface that accepts a website address and a dropdown to select an 
 
 5. **Use the Gradio interface**:
    - Open the provided URL in your browser.
-   Enter the website URL, select the LLM, and ask a question. The application will use the LLM's retrieval capabilities to extract relevant information from the website and provide an answer using the selected LLM.swer using the selected LLM.
+   Enter the website URL, select the LLM, and ask a question. The application will use the LLM's retrieval capabilities to extract relevant information from the website and provide an answer using the selected LLM.swer using th
+
+The chatbot maintains conversation history, allowing it to provide context-aware responses based on previous interactions. This enhances the conversational experience and ensures more relevant and accurate answers.e selected LLM.
