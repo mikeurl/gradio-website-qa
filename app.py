@@ -1,19 +1,17 @@
 import gradio as gr
 import requests
 from bs4 import BeautifulSoup
-from database import store_content
+from database import store_content  # Ensure you have this module
 
-
-cont
-
-def llm_api_call(api_key, model, prompt):
+# Function to call the LLM API
+def llm_api_call(api_key, model, prompt, additional_context=""):
     headers = {
         'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json',
     }
     data = {
         'model': model,
-        'prompt': prompt,
+        'prompt': f"{prompt}\n{additional_context}",
         'max_tokens': 150,
         'temperature': 0.7,
     }
@@ -22,43 +20,57 @@ def llm_api_call(api_key, model, prompt):
         return response.json()['choices'][0]['text'].strip()
     else:
         return None
-ext = []  # List to store conversation history#Import LLM API libraries and config
-    # from config import LLM_API_KEY
 
-def scrape_website(url, question):
-    # Send the user's query to the LLM for retrieval
-    # This requires using the LLM's API and the API key from config.py
-    # For example:
-    retrieved_content = llm_retr
+# Function to scrape a website and assess content relevance
+def scrape_website(api_key, model, url, question):
+    try:
+        # Retrieve website content
+        response = requests.get(url)
+        response.raise_for_status()
+        soup = BeautifulSoup(response.content, 'html.parser')
+        retrieved_content = soup.get_text()
+
         # Evaluate relevance using the LLM
-    relevance_prompt = f"Assess the relevance of the following content for the query '{question}':\n{retrieved_content}"
-    relevance_score = llm_api_call(LLM_API_KEY, llm, relevance_prompt)
-    
-    # Store content if relevant
-    if relevance_score > 0.5:  # Assuming a threshold of 0.5 for relevance
-        store_content(url, retrieved_content)
-ieve(LLM_API_KEY, url, question)
-    return retrieved_content
+        relevance_prompt = f"Assess the relevance of the following content for the query '{question}':\n{retrieved_content}"
+        relevance_score = float(llm_api_call(api_key, model, relevance_prompt))
+        
+        # Store content if relevant
+        if relevance_score > 0.5:  # Threshold for relevance
+            store_content(url, retrieved_content)
 
-def answer_question(llm, question, website_content):
+        return retrieved_content
+    except Exception as e:
+        return f"Error during scraping: {str(e)}"
 
-        # Append the current question to the context
-    context.append({"question": question, "response": None})# Implement the logic to use the selected LLM to answer the question
-    nswer
-    # This will require using the LLM's API and the API key from config.py
-    # For example:
-
-        # Include context in the prompt sent to the LLM
-    prompt = "\n".join([f"Q: {entry['question']}\nA: {entry['response']}" for entry in context if entry['response'] is not None])
+# Function to answer a question using LLM
+def answer_question(api_key, model, question, website_content, context):
+    # Include previous context in the prompt
+    prompt = "\n".join([f"Q: {entry['question']}\nA: {entry['response']}" for entry in context if entry['response']])
     prompt += f"\nQ: {question}\nA: "
-    response = llm_api_call(LLM_API_KEY, llm, prompt, website_content)
 
-    # Append the response to the context
-    context[-1]['response'] = responseresponse = llm_api_call(LLM_API_KEY, question, website_content)
+    # Call LLM to generate an answer
+    response = llm_api_call(api_key, model, prompt, additional_context=website_content)
+    context.append({"question": question, "response": response})
     return response
 
+# Main function for the Gradio interface
+def main(url, llm, question):
+    api_key = "YOUR_API_KEY"  # Replace with your actual API key
+    context = []  # Initialize conversation history
+
+    # Scrape website for content
+    website_content = scrape_website(api_key, llm, url, question)
+    if "Error" in website_content:
+        return website_content  # Return error message if scraping fails
+
+    # Answer the user's question
+    answer = answer_question(api_key, llm, question, website_content, context)
+    return answer
+
+# Define LLM options
 llm_options = ["LLM1", "LLM2"]  # Replace with actual LLM options
 
+# Create Gradio interface
 interface = gr.Interface(
     fn=main,
     inputs=[
