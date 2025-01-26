@@ -3,7 +3,25 @@ import requests
 from bs4from database import store_content import BeautifulSoup
 
 
-context = []  # List to store conversation history#
+cont
+
+def llm_api_call(api_key, model, prompt):
+    headers = {
+        'Authorization': f'Bearer {api_key}',
+        'Content-Type': 'application/json',
+    }
+    data = {
+        'model': model,
+        'prompt': prompt,
+        'max_tokens': 150,
+        'temperature': 0.7,
+    }
+    response = requests.post('https://api.openai.com/v1/completions', headers=headers, json=data)
+    if response.status_code == 200:
+        return response.json()['choices'][0]['text'].strip()
+    else:
+        return None
+ext = []  # List to store conversation history#
 Import LLM API libraries and config
 # from config import LLM_API_KEY
 
