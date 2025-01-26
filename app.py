@@ -22,9 +22,8 @@ def llm_api_call(api_key, model, prompt):
         return response.json()['choices'][0]['text'].strip()
     else:
         return None
-ext = []  # List to store conversation history#
-# Import LLM API libraries and config
-# from config import LLM_API_KEY
+ext = []  # List to store conversation history#Import LLM API libraries and config
+    # from config import LLM_API_KEY
 
 def scrape_website(url, question):
     # Send the user's query to the LLM for retrieval
