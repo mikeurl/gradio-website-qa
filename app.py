@@ -1,6 +1,7 @@
 import gradio as gr
 import requests
-from bs4from database import store_content import BeautifulSoup
+from bs4 import BeautifulSoup
+from database import store_content
 
 
 cont
