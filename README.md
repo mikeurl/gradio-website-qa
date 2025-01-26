@@ -23,6 +23,15 @@ A A Gradio interface that accepts a website address and a dropdown to select an 
    python app.py
    ```
 
+## Caching Mechanism
+The application includes a caching mechanism that stores website content in a local SQLite database. This improves efficiency by retrieving content from the cache when available and within an acceptable age, reducing the need for repeated scraping.
+
+## LLM Integration
+The application integrates an LLM to evaluate the relevance of scraped content and answer questions based on the provided website. The LLM helps ensure that only relevant content is stored in the cache and provides context-aware responses to user queries.
+
+## OpenAI API Optimization
+The application has been optimized for OpenAI's API, ensuring compatibility and proper functionality. The `llm_api_call` function is tailored to interact with OpenAI's API, providing seamless integration and context-aware responses.
+
 5. **Use the Gradio interface**:
    - Open the provided URL in your browser.
    Enter the website URL, select the LLM, and ask a question. The application will use the LLM's retrieval capabilities to extract relevant information from the website and provide an answer using the selected LLM.swer using th
